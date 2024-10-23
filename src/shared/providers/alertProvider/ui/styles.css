@@ -1,0 +1,10 @@
+.alert-container {
+  position: fixed;
+  left: 50%;
+  top: 20px;
+  z-index: 100;
+  transform: translateX(-50%);
+  width: auto;
+  padding-left: 0;
+  padding-right: 0;
+}

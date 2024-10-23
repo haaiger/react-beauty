@@ -1,7 +1,7 @@
 import { FC, ReactNode, useRef } from "react";
 import ReactDOM from "react-dom";
 import { useClickAway } from "react-use";
-import "./Modal.css";
+import "./styles.css";
 
 /** Интерфейс для компонента модального окна Modal. */
 interface ModalProps {
@@ -17,7 +17,7 @@ interface ModalProps {
  * Компонент Modal отображает содержимое в виде модального окна,
  * используя React Portals для рендеринга в отдельный элемент DOM.
  */
-const Modal: FC<ModalProps> = (props) => {
+export const Modal: FC<ModalProps> = (props) => {
   const { isOpen, onClose, children } = props;
 
   /** Создаем реф для модального контента. */
@@ -51,5 +51,3 @@ const Modal: FC<ModalProps> = (props) => {
     portalRoot
   );
 };
-
-export default Modal;

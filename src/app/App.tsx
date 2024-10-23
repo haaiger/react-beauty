@@ -1,12 +1,12 @@
-import "./App.css";
 import { Transaction } from "@entities/transaction/model";
 import { useState } from "react";
 import Balance from "@widgets/budgetOverview/ui/Balance";
 import EditTransactionModal from "@features/transaction/editTransaction/ui/EditTransactionModal";
 import TransactionForm from "@features/transaction/transactionForm/ui";
 import TransactionList from "@features/transaction/listTransactions/ui";
+import { useAlert } from "@shared/providers/alertProvider";
 
-function App() {
+const App = () => {
   /** Состояние для хранения списка транзакций. */
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   /** Состояние для модального окна. */
@@ -16,8 +16,10 @@ function App() {
   const [currentTransaction, setCurrentTransaction] =
     useState<Nullable<Transaction>>(null);
 
+  const alert = useAlert();
+
   /**
-   * Функция для обработки добавления новой транзакции.
+   * Функция для добавления новой транзакции.
    *
    * @param transaction - данные новой транзакции.
    */
@@ -28,6 +30,10 @@ function App() {
     };
 
     setTransactions((prev) => [...prev, newTransaction]);
+
+    alert.show({
+      message: "Новая транзакция успешно добавлена!",
+    });
   };
 
   /**
@@ -49,6 +55,10 @@ function App() {
           : transaction;
       })
     );
+
+    alert.show({
+      message: "Транзакция успешно обновлена!",
+    });
   };
 
   /**
@@ -84,6 +94,10 @@ function App() {
         return id !== removeTransactionId;
       })
     );
+
+    alert.show({
+      message: "Транзакция успешно удалена!",
+    });
   };
 
   return (
@@ -114,6 +128,6 @@ function App() {
       </div>
     </>
   );
-}
+};
 
 export default App;

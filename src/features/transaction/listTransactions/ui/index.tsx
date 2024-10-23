@@ -1,6 +1,6 @@
 import { Transaction } from "@entities/transaction/model";
 import { FC } from "react";
-import "./style.css";
+import "./styles.css";
 
 /** Интерфейс для пропсов компонента TransactionList. */
 interface ITransactionListProps {
@@ -18,7 +18,7 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
     props;
 
   return (
-    <ul>
+    <ul className="list">
       {transactions.map((transaction) => {
         const { id, date, category, amount } = transaction;
 

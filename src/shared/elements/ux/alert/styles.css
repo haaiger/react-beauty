@@ -1,0 +1,31 @@
+.alert {
+  margin-bottom: 4px;
+  display: flex;
+  min-width: 20rem;
+  max-width: 32rem;
+  cursor: pointer;
+  align-items: center;
+  white-space: normal;
+  word-break: break-word;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  padding: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.alert:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.alert h3 {
+  margin-left: 8px;
+  max-height: 80px;
+  width: 100%;
+  user-select: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+}

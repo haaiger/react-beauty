@@ -1,6 +1,6 @@
 import { Transaction } from "@entities/transaction/model";
 import TransactionForm from "@features/transaction/transactionForm/ui";
-import Modal from "@shared/css/elements/ux/Modal";
+import { Modal } from "@shared/elements/ux";
 import { FC } from "react";
 
 /** Интерфейс для пропсов компонента EditTransactionModal. */
