@@ -19,33 +19,33 @@ function App() {
   /**
    * Функция для обработки добавления новой транзакции.
    *
-   * @param data - данные новой транзакции.
+   * @param transaction - данные новой транзакции.
    */
-  const handleAddTransaction = (data: Transaction) => {
+  const handleAddTransaction = (transaction: Transaction) => {
     const newTransaction: Transaction = {
-      ...data,
+      ...transaction,
       id: Date.now().toString(),
     };
 
-    setTransactions([...transactions, newTransaction]);
+    setTransactions((prev) => [...prev, newTransaction]);
   };
 
   /**
    * Функция для изменения существующей транзакции.
    *
-   * @param updatedTransactionData - обновленные данные транзакции.
+   * @param updatedTransactionInfo - обновленные данные транзакции.
    */
   const handleEditTransaction = (
-    updatedTransactionData: Partial<Transaction>
+    updatedTransactionInfo: Partial<Transaction>
   ) => {
-    const { id: updatedTransactionId } = updatedTransactionData;
+    const { id: updatedTransactionId } = updatedTransactionInfo;
 
-    setTransactions(
-      transactions.map((transaction) => {
+    setTransactions((prev) =>
+      prev.map((transaction) => {
         const { id } = transaction;
 
         return id === updatedTransactionId
-          ? { ...transaction, ...updatedTransactionData }
+          ? { ...transaction, ...updatedTransactionInfo }
           : transaction;
       })
     );

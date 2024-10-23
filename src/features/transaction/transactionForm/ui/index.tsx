@@ -7,7 +7,7 @@ interface TransactionFormProps {
   /** Значения по умолчанию для полей формы. */
   defaultValues?: Partial<Transaction>;
   /**  Функция для обработки отправки формы. */
-  onSubmit: (data: Transaction) => void;
+  onSubmit: (transaction: Transaction) => void;
 }
 
 /** Компонент TransactionForm предоставляет форму для добавления новой транзакции. */
@@ -33,6 +33,7 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           render={({ field }) => (
             <input
               placeholder="0"
+              id="amount"
               aria-label="Сумма транзакции"
               type="number"
               step="0.01"
@@ -56,7 +57,12 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           aria-label="Категория транзакции"
           rules={{ required: "Категория обязательна" }}
           render={({ field }) => (
-            <input aria-label="Категория транзакции" type="text" {...field} />
+            <input
+              id="category"
+              aria-label="Категория транзакции"
+              type="text"
+              {...field}
+            />
           )}
         />
 
@@ -73,7 +79,12 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           defaultValue={new Date().toISOString().split("T")[0]}
           rules={{ required: "Дата обязательна" }}
           render={({ field }) => (
-            <input aria-label="Дата транзакции" type="date" {...field} />
+            <input
+              id="date"
+              aria-label="Дата транзакции"
+              type="date"
+              {...field}
+            />
           )}
         />
 
@@ -88,7 +99,7 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           control={control}
           defaultValue="income"
           render={({ field }) => (
-            <select aria-label="Тип транзакции" {...field}>
+            <select id="type" aria-label="Тип транзакции" {...field}>
               <option value="income">Доход</option>
 
               <option value="expense">Расход</option>
