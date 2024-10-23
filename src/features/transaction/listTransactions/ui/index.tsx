@@ -1,5 +1,6 @@
 import { Transaction } from "@entities/transaction/model";
 import { FC } from "react";
+import "./style.css";
 
 /** Интерфейс для пропсов компонента TransactionList. */
 interface ITransactionListProps {
@@ -23,24 +24,29 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
 
         return (
           <li key={id}>
-            <article aria-labelledby={`transaction-${id}`}>
+            <article
+              className="transaction-item"
+              aria-labelledby={`transaction-${id}`}
+            >
               <p id={`transaction-${id}`}>
                 {date} - {category}: {amount} руб.
               </p>
 
-              <button
-                aria-label={`Изменить транзакцию ${category} на сумму ${amount} руб.`}
-                onClick={() => onOpenEditTransactionsModal(transaction)}
-              >
-                Изменить
-              </button>
+              <div>
+                <button
+                  aria-label={`Изменить транзакцию ${category} на сумму ${amount} руб.`}
+                  onClick={() => onOpenEditTransactionsModal(transaction)}
+                >
+                  Изменить
+                </button>
 
-              <button
-                aria-label={`Удалить транзакцию ${category} на сумму ${amount} руб.`}
-                onClick={() => onDeleteTransaction(transaction)}
-              >
-                Удалить
-              </button>
+                <button
+                  aria-label={`Удалить транзакцию ${category} на сумму ${amount} руб.`}
+                  onClick={() => onDeleteTransaction(transaction)}
+                >
+                  Удалить
+                </button>
+              </div>
             </article>
           </li>
         );

@@ -6,13 +6,19 @@ import { Transaction } from "@entities/transaction/model";
 interface TransactionFormProps {
   /** Значения по умолчанию для полей формы. */
   defaultValues?: Partial<Transaction>;
+  /** Текст для кнопки отправки формы. */
+  submitButtonText?: string;
   /**  Функция для обработки отправки формы. */
   onSubmit: (transaction: Transaction) => void;
 }
 
 /** Компонент TransactionForm предоставляет форму для добавления новой транзакции. */
 const TransactionForm: FC<TransactionFormProps> = (props) => {
-  const { onSubmit, defaultValues } = props;
+  const {
+    defaultValues,
+    submitButtonText = "Добавить транзакцию",
+    onSubmit,
+  } = props;
 
   const {
     control,
@@ -109,7 +115,7 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
       </div>
 
       <button type="submit" aria-label="Добавить транзакцию">
-        Добавить транзакцию
+        {submitButtonText}
       </button>
     </form>
   );

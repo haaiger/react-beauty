@@ -1,6 +1,6 @@
 import { Transaction } from '@entities/transaction/model';
 import { calculateBalance } from '@entities/transaction/utils/calculateBalance';
-import { describe, it, expect } from 'vitest';;
+import { describe, it, expect } from 'vitest';
 
 describe('calculateBalance', () => {
     it('should return 0 for an empty transaction list', () => {

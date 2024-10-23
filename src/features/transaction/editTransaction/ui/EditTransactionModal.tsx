@@ -31,6 +31,7 @@ const EditTransactionModal: FC<IEditTransactionModalProps> = (props) => {
     >
       {currentTransaction && (
         <TransactionForm
+          submitButtonText="Изменить транзакцию"
           defaultValues={currentTransaction}
           onSubmit={(updatedData) => {
             onEditTransaction(updatedData);

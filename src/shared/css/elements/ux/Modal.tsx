@@ -1,5 +1,6 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useRef } from "react";
 import ReactDOM from "react-dom";
+import { useClickAway } from "react-use";
 import "./Modal.css";
 
 /** Интерфейс для компонента модального окна Modal. */
@@ -19,6 +20,12 @@ interface ModalProps {
 const Modal: FC<ModalProps> = (props) => {
   const { isOpen, onClose, children } = props;
 
+  /** Создаем реф для модального контента. */
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  /** Используем хук useClickAway для закрытия модального окна при клике вне его области. */
+  useClickAway(modalRef, onClose);
+
   /** Если модальное окно не должно быть открыто, ничего не рендерим. */
   if (!isOpen) return null;
 
@@ -30,7 +37,7 @@ const Modal: FC<ModalProps> = (props) => {
 
   return ReactDOM.createPortal(
     <div className="modal-overlay" role="dialog" aria-modal="true">
-      <div className="modal-content" role="document">
+      <div className="modal-content" role="document" ref={modalRef}>
         <button
           className="modal-close"
           onClick={onClose}
