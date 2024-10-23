@@ -18,8 +18,8 @@ const Balance: FC<BalanceProps> = (props) => {
   const balance = calculateBalance(transactions);
 
   return (
-    <div>
-      <h2>Текущий баланс</h2>
+    <div role="region" aria-labelledby="balance-heading" aria-live="polite">
+      <h2 id="balance-heading">Текущий баланс</h2>
 
       <p>{balance} руб.</p>
     </div>

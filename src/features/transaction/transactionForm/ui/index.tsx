@@ -23,7 +23,7 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label>Сумма</label>
+        <label htmlFor="amount">Сумма</label>
 
         <Controller
           name="amount"
@@ -33,6 +33,7 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           render={({ field }) => (
             <input
               placeholder="0"
+              aria-label="Сумма транзакции"
               type="number"
               step="0.01"
               {...field}
@@ -46,42 +47,48 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
       </div>
 
       <div>
-        <label>Категория</label>
+        <label htmlFor="category">Категория</label>
 
         <Controller
           name="category"
           control={control}
           defaultValue=""
+          aria-label="Категория транзакции"
           rules={{ required: "Категория обязательна" }}
-          render={({ field }) => <input type="text" {...field} />}
+          render={({ field }) => (
+            <input aria-label="Категория транзакции" type="text" {...field} />
+          )}
         />
 
         {errors.category && <span>{errors.category.message}</span>}
       </div>
 
       <div>
-        <label>Дата</label>
+        <label htmlFor="date">Дата</label>
 
         <Controller
           name="date"
           control={control}
+          aria-label="Дата транзакции"
           defaultValue={new Date().toISOString().split("T")[0]}
           rules={{ required: "Дата обязательна" }}
-          render={({ field }) => <input type="date" {...field} />}
+          render={({ field }) => (
+            <input aria-label="Дата транзакции" type="date" {...field} />
+          )}
         />
 
         {errors.date && <span>{errors.date.message}</span>}
       </div>
 
       <div>
-        <label>Тип</label>
+        <label htmlFor="type">Дата</label>
 
         <Controller
           name="type"
           control={control}
           defaultValue="income"
           render={({ field }) => (
-            <select {...field}>
+            <select aria-label="Тип транзакции" {...field}>
               <option value="income">Доход</option>
 
               <option value="expense">Расход</option>
@@ -90,7 +97,9 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
         />
       </div>
 
-      <button type="submit">Добавить транзакцию</button>
+      <button type="submit" aria-label="Добавить транзакцию">
+        Добавить транзакцию
+      </button>
     </form>
   );
 };

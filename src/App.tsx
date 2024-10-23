@@ -42,9 +42,9 @@ function App() {
 
     setTransactions(
       transactions.map((transaction) => {
-        const { id: transactionId } = transaction;
+        const { id } = transaction;
 
-        return transactionId === updatedTransactionId
+        return id === updatedTransactionId
           ? { ...transaction, ...updatedTransactionData }
           : transaction;
       })
@@ -96,17 +96,21 @@ function App() {
       />
 
       <div>
-        <h1>Управление бюджетом</h1>
+        <h1 id="budget-management-heading">Управление бюджетом</h1>
 
         <TransactionForm onSubmit={handleAddTransaction} />
 
         <Balance transactions={transactions} />
 
-        <TransactionList
-          transactions={transactions}
-          onOpenEditTransactionsModal={handleOpenEditTransactionsModal}
-          onDeleteTransaction={handleDeleteTransaction}
-        />
+        <div role="region" aria-labelledby="transaction-list-heading">
+          <h2 id="transaction-list-heading">Список транзакций</h2>
+
+          <TransactionList
+            transactions={transactions}
+            onOpenEditTransactionsModal={handleOpenEditTransactionsModal}
+            onDeleteTransaction={handleDeleteTransaction}
+          />
+        </div>
       </div>
     </>
   );

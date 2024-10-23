@@ -23,13 +23,25 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
 
         return (
           <li key={id}>
-            {date} - {category}: {amount} руб.
-            <button onClick={() => onOpenEditTransactionsModal(transaction)}>
-              Изменить
-            </button>
-            <button onClick={() => onDeleteTransaction(transaction)}>
-              Удалить
-            </button>
+            <article aria-labelledby={`transaction-${id}`}>
+              <p id={`transaction-${id}`}>
+                {date} - {category}: {amount} руб.
+              </p>
+
+              <button
+                aria-label={`Изменить транзакцию ${category} на сумму ${amount} руб.`}
+                onClick={() => onOpenEditTransactionsModal(transaction)}
+              >
+                Изменить
+              </button>
+
+              <button
+                aria-label={`Удалить транзакцию ${category} на сумму ${amount} руб.`}
+                onClick={() => onDeleteTransaction(transaction)}
+              >
+                Удалить
+              </button>
+            </article>
           </li>
         );
       })}

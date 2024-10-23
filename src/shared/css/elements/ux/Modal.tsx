@@ -29,12 +29,15 @@ const Modal: FC<ModalProps> = (props) => {
   if (!portalRoot) return null;
 
   return ReactDOM.createPortal(
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="modal-close" onClick={onClose}>
+    <div className="modal-overlay" role="dialog" aria-modal="true">
+      <div className="modal-content" role="document">
+        <button
+          className="modal-close"
+          onClick={onClose}
+          aria-label="Закрыть модальное окно"
+        >
           &times;
         </button>
-
         {children}
       </div>
     </div>,
