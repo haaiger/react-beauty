@@ -13,20 +13,27 @@ interface ITabOption<T> {
 interface ITabsProps<T> {
   /** Массив опций для табов. */
   options: ITabOption<T>[];
+  /** Выбранный таб. */
+  selectedTab: Nullable<T>;
   /** Функция изменения таба. */
   onSelectFilter: (filter: T) => void;
 }
 
 /** Компонент Tabs предоставляет интерфейс для выбора фильтрации данных. */
 export const Tabs = <T,>(props: ITabsProps<T>) => {
-  const { options, onSelectFilter } = props;
-  const [selectedTab, setSelectedTab] = React.useState<T | null>(null);
+  const { options, onSelectFilter, selectedTab } = props;
+  const [currentTab, setCurrentTab] = React.useState<Nullable<T>>(selectedTab);
+
+  const handleTabSelection = (value: T) => {
+    setCurrentTab(value);
+    onSelectFilter(value);
+  };
 
   return (
     <div className="tabs" role="tablist">
       {options.map((option) => {
         const { value, label } = option;
-        const isSelected = value === selectedTab;
+        const isSelected = value === currentTab;
 
         return (
           <button
@@ -34,10 +41,7 @@ export const Tabs = <T,>(props: ITabsProps<T>) => {
             role="tab"
             className={isSelected ? "selected" : ""}
             aria-selected={isSelected}
-            onClick={() => {
-              setSelectedTab(value);
-              onSelectFilter(value);
-            }}
+            onClick={() => value && handleTabSelection(value)}
           >
             {label}
           </button>

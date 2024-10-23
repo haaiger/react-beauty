@@ -1,12 +1,12 @@
 import { Period, Transaction } from "@entities/transaction/model";
 import { useState } from "react";
-import Balance from "@widgets/budgetOverview/ui/Balance";
 import EditTransactionModal from "@features/transaction/editTransaction/ui/EditTransactionModal";
 import TransactionForm from "@features/transaction/transactionForm/ui";
 import TransactionList from "@features/transaction/listTransactions/ui";
 import { useAlert } from "@shared/providers/alertProvider";
 import { Tabs } from "@shared/elements/ux";
 import { OPTIONS } from "@entities/transaction/utils/constants";
+import Balance from "@widgets/budgetOverview/ui/Balance";
 
 const App = () => {
   /** Состояние для хранения списка транзакций. */
@@ -18,7 +18,7 @@ const App = () => {
   const [currentTransaction, setCurrentTransaction] =
     useState<Nullable<Transaction>>(null);
   /** Состояние для выбранного фильтра по периоду. */
-  const [filter, setFilter] = useState<Period>("all");
+  const [filter, setFilter] = useState<Nullable<Period>>(null);
 
   const alert = useAlert();
 
@@ -160,19 +160,34 @@ const App = () => {
 
         <TransactionForm onSubmit={handleAddTransaction} />
 
-        <Balance transactions={transactions} />
+        {filteredTransactions.length > 0 && (
+          <>
+            <Balance transactions={transactions} />
 
-        <div role="region" aria-labelledby="transaction-list-heading">
-          <h2 id="transaction-list-heading">Список транзакций</h2>
+            <Balance
+              title="Баланс за выбранный период"
+              transactions={filteredTransactions}
+            />
 
-          <Tabs<Period> options={OPTIONS} onSelectFilter={handleSelectFilter} />
+            <div role="region" aria-labelledby="transaction-list-heading">
+              <p>Количество транзакций: {filteredTransactions.length}</p>
 
-          <TransactionList
-            transactions={filteredTransactions}
-            onOpenEditTransactionsModal={handleOpenEditTransactionsModal}
-            onDeleteTransaction={handleDeleteTransaction}
-          />
-        </div>
+              <h2 id="transaction-list-heading">Список транзакций:</h2>
+
+              <Tabs<Period>
+                options={OPTIONS}
+                selectedTab={filter}
+                onSelectFilter={handleSelectFilter}
+              />
+
+              <TransactionList
+                transactions={filteredTransactions}
+                onOpenEditTransactionsModal={handleOpenEditTransactionsModal}
+                onDeleteTransaction={handleDeleteTransaction}
+              />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

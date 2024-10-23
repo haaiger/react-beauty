@@ -1,6 +1,10 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Transaction } from "@entities/transaction/model";
+import {
+  validateAmount,
+  validateDate,
+} from "@entities/transaction/utils/validation";
 
 /** Интерфейс для пропсов компонента TransactionForm. */
 interface TransactionFormProps {
@@ -8,12 +12,12 @@ interface TransactionFormProps {
   defaultValues?: Partial<Transaction>;
   /** Текст для кнопки отправки формы. */
   submitButtonText?: string;
-  /**  Функция для обработки отправки формы. */
+  /** Функция для обработки отправки формы. */
   onSubmit: (transaction: Transaction) => void;
 }
 
 /** Компонент TransactionForm предоставляет форму для добавления новой транзакции. */
-const TransactionForm: FC<TransactionFormProps> = (props) => {
+const TransactionForm: FC<TransactionFormProps> = memo((props) => {
   const {
     defaultValues,
     submitButtonText = "Добавить транзакцию",
@@ -30,98 +34,88 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label htmlFor="amount">Сумма</label>
-
         <Controller
           name="amount"
           control={control}
           defaultValue={0}
           rules={{
             required: "Сумма обязательна",
-            min: { value: 0.01, message: "Сумма не может быть отрицательной" },
+            validate: validateAmount,
           }}
           render={({ field }) => (
             <input
               placeholder="0"
               id="amount"
               aria-label="Сумма транзакции"
+              aria-describedby={errors.amount ? "amount-error" : undefined}
               type="number"
               step="0.01"
               {...field}
-              onFocus={(e) => e.target.value === "0" && (e.target.value = "")} // Убирает дефолтное значение при фокусе
-              onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
+              onFocus={() => {
+                if (field.value === 0) {
+                  field.onChange("");
+                }
+              }}
+              onBlur={(e) => {
+                if (e.target.value === "") {
+                  field.onChange("0");
+                }
+              }}
             />
           )}
         />
-
-        {errors.amount && <span>{errors.amount.message}</span>}
+        {errors.amount && (
+          <span id="amount-error">{errors.amount.message}</span>
+        )}
       </div>
 
       <div>
         <label htmlFor="category">Категория</label>
-
         <Controller
           name="category"
           control={control}
           defaultValue=""
-          aria-label="Категория транзакции"
           rules={{ required: "Категория обязательна" }}
           render={({ field }) => (
             <input
               id="category"
               aria-label="Категория транзакции"
+              aria-describedby={errors.category ? "category-error" : undefined}
               type="text"
               {...field}
             />
           )}
         />
-
-        {errors.category && <span>{errors.category.message}</span>}
+        {errors.category && (
+          <span id="category-error">{errors.category.message}</span>
+        )}
       </div>
 
       <div>
         <label htmlFor="date">Дата</label>
-
         <Controller
           name="date"
           control={control}
-          aria-label="Дата транзакции"
           defaultValue={new Date().toISOString().split("T")[0]}
           rules={{
             required: "Дата обязательна",
-            validate: (value) => {
-              const selectedDate = new Date(value);
-              const today = new Date();
-              const minDate = new Date("1900-01-01");
-
-              today.setHours(0, 0, 0, 0);
-
-              if (selectedDate > today) {
-                return "Дата не может быть в будущем";
-              }
-
-              if (selectedDate < minDate) {
-                return "Дата не может быть меньше 1900 года";
-              }
-
-              return true;
-            },
+            validate: validateDate,
           }}
           render={({ field }) => (
             <input
               id="date"
               aria-label="Дата транзакции"
+              aria-describedby={errors.date ? "date-error" : undefined}
               type="date"
               {...field}
             />
           )}
         />
-
-        {errors.date && <span>{errors.date.message}</span>}
+        {errors.date && <span id="date-error">{errors.date.message}</span>}
       </div>
 
       <div>
-        <label htmlFor="type">Дата</label>
-
+        <label htmlFor="type">Тип</label>
         <Controller
           name="type"
           control={control}
@@ -129,7 +123,6 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           render={({ field }) => (
             <select id="type" aria-label="Тип транзакции" {...field}>
               <option value="income">Доход</option>
-
               <option value="expense">Расход</option>
             </select>
           )}
@@ -141,6 +134,6 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
       </button>
     </form>
   );
-};
+});
 
 export default TransactionForm;
