@@ -13,7 +13,7 @@ export default defineConfig({
       '@features': '/src/features',
       '@entities': '/src/entities',
       '@shared': '/src/shared',
-      '@tests': '/__tests__',
+      '@setup': '__tests__',
     }
   }
 })

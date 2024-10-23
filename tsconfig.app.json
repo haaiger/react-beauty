@@ -29,9 +29,9 @@
       "@features/*": ["src/features/*"],
       "@entities/*": ["src/entities/*"],
       "@shared/*": ["src/shared/*"],
-      "@tests": ["__tests__/setup-util.tsx"]
+      "@setup": ["__tests__/*"]
     }
   },
-  "include": ["src"],
+  "include": ["./**/*.ts", "./**/*.tsx", ".eslintrc.cjs", ".vitest/setup.tsx"],
   "exclude": ["node_modules"]
 }
