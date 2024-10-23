@@ -35,7 +35,10 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           name="amount"
           control={control}
           defaultValue={0}
-          rules={{ required: "Сумма обязательна", min: 0.01 }}
+          rules={{
+            required: "Сумма обязательна",
+            min: { value: 0.01, message: "Сумма не может быть отрицательной" },
+          }}
           render={({ field }) => (
             <input
               placeholder="0"
@@ -83,7 +86,26 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           control={control}
           aria-label="Дата транзакции"
           defaultValue={new Date().toISOString().split("T")[0]}
-          rules={{ required: "Дата обязательна" }}
+          rules={{
+            required: "Дата обязательна",
+            validate: (value) => {
+              const selectedDate = new Date(value);
+              const today = new Date();
+              const minDate = new Date("1900-01-01");
+
+              today.setHours(0, 0, 0, 0);
+
+              if (selectedDate > today) {
+                return "Дата не может быть в будущем";
+              }
+
+              if (selectedDate < minDate) {
+                return "Дата не может быть меньше 1900 года";
+              }
+
+              return true;
+            },
+          }}
           render={({ field }) => (
             <input
               id="date"

@@ -61,12 +61,20 @@ export const AlertProvider: FC<IAlertPropviderProps> = (props) => {
   return (
     <AlertContext.Provider value={value}>
       {createPortal(
-        <div className="alert-container" id="alerts">
+        <div
+          className="alert-container"
+          id="alerts"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           <AnimatePresence mode="popLayout">
             {alerts.map((alert) => {
               const { id } = alert;
 
-              return <Alert key={id} {...alert} data-testid="alert" />;
+              return (
+                <Alert key={id} {...alert} data-testid="alert" role="alert" />
+              );
             })}
           </AnimatePresence>
         </div>,

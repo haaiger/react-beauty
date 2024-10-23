@@ -1,10 +1,12 @@
-import { Transaction } from "@entities/transaction/model";
+import { Period, Transaction } from "@entities/transaction/model";
 import { useState } from "react";
 import Balance from "@widgets/budgetOverview/ui/Balance";
 import EditTransactionModal from "@features/transaction/editTransaction/ui/EditTransactionModal";
 import TransactionForm from "@features/transaction/transactionForm/ui";
 import TransactionList from "@features/transaction/listTransactions/ui";
 import { useAlert } from "@shared/providers/alertProvider";
+import { Tabs } from "@shared/elements/ux";
+import { OPTIONS } from "@entities/transaction/utils/constants";
 
 const App = () => {
   /** Состояние для хранения списка транзакций. */
@@ -15,6 +17,8 @@ const App = () => {
   /** Состояние для выбранной транзакции. */
   const [currentTransaction, setCurrentTransaction] =
     useState<Nullable<Transaction>>(null);
+  /** Состояние для выбранного фильтра по периоду. */
+  const [filter, setFilter] = useState<Period>("all");
 
   const alert = useAlert();
 
@@ -100,6 +104,48 @@ const App = () => {
     });
   };
 
+  /**
+   * Функция для выбора фильтра по периоду.
+   *
+   * @param selectedFilter - выбранный фильтр.
+   */
+  const handleSelectFilter = (selectedFilter: Period) => {
+    setFilter(selectedFilter);
+  };
+
+  /** Фильтрация транзакций на основе выбранного периода. */
+  const filteredTransactions = transactions.filter((transaction) => {
+    const { date } = transaction;
+    const transactionDate = new Date(date);
+    const now = new Date();
+
+    switch (filter) {
+      case "week": {
+        const oneWeekAgo = new Date();
+
+        oneWeekAgo.setDate(now.getDate() - 7);
+
+        return transactionDate >= oneWeekAgo;
+      }
+      case "month": {
+        const oneMonthAgo = new Date();
+
+        oneMonthAgo.setMonth(now.getMonth() - 1);
+
+        return transactionDate >= oneMonthAgo;
+      }
+      case "year": {
+        const oneYearAgo = new Date();
+
+        oneYearAgo.setFullYear(now.getFullYear() - 1);
+
+        return transactionDate >= oneYearAgo;
+      }
+      default:
+        return true;
+    }
+  });
+
   return (
     <>
       <EditTransactionModal
@@ -119,8 +165,10 @@ const App = () => {
         <div role="region" aria-labelledby="transaction-list-heading">
           <h2 id="transaction-list-heading">Список транзакций</h2>
 
+          <Tabs<Period> options={OPTIONS} onSelectFilter={handleSelectFilter} />
+
           <TransactionList
-            transactions={transactions}
+            transactions={filteredTransactions}
             onOpenEditTransactionsModal={handleOpenEditTransactionsModal}
             onDeleteTransaction={handleDeleteTransaction}
           />
