@@ -20,7 +20,8 @@ const Balance: FC<BalanceProps> = (props) => {
   return (
     <div>
       <h2>Текущий баланс</h2>
-      <p>{balance} руб.</p>{" "}
+
+      <p>{balance} руб.</p>
     </div>
   );
 };

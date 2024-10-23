@@ -4,19 +4,21 @@ import { Transaction } from "@entities/transaction/model";
 
 /** Интерфейс для пропсов компонента TransactionForm. */
 interface TransactionFormProps {
+  /** Значения по умолчанию для полей формы. */
+  defaultValues?: Partial<Transaction>;
   /**  Функция для обработки отправки формы. */
   onSubmit: (data: Transaction) => void;
 }
 
 /** Компонент TransactionForm предоставляет форму для добавления новой транзакции. */
 const TransactionForm: FC<TransactionFormProps> = (props) => {
-  const { onSubmit } = props;
+  const { onSubmit, defaultValues } = props;
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Transaction>();
+  } = useForm<Transaction>({ defaultValues });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -28,7 +30,16 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
           control={control}
           defaultValue={0}
           rules={{ required: "Сумма обязательна", min: 0.01 }}
-          render={({ field }) => <input type="number" step="0.01" {...field} />}
+          render={({ field }) => (
+            <input
+              placeholder="0"
+              type="number"
+              step="0.01"
+              {...field}
+              onFocus={(e) => e.target.value === "0" && (e.target.value = "")} // Убирает дефолтное значение при фокусе
+              onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
+            />
+          )}
         />
 
         {errors.amount && <span>{errors.amount.message}</span>}
@@ -68,7 +79,7 @@ const TransactionForm: FC<TransactionFormProps> = (props) => {
         <Controller
           name="type"
           control={control}
-          defaultValue="expense"
+          defaultValue="income"
           render={({ field }) => (
             <select {...field}>
               <option value="income">Доход</option>
